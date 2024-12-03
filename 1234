@@ -1,0 +1,72 @@
+AIM:
+	To integrate the testing process for testing the performance of the e-commerce application using selenium.
+ALGORITHM:
+STEP 1: Set up a TestNG test suite,
+STEP 2: create test methods with appropriate annotations
+STEP 3: Execute the program
+STEP 4: Verify the expected outcome
+PROGRAM:
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+public class ECommerceTest {
+    private WebDriver driver;
+
+    @BeforeClass
+    public void setUp() {
+        // Set ChromeDriver path
+        System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver");
+
+        // Create a new instance of ChromeDriver
+        driver = new ChromeDriver();
+
+        // Maximize the browser window
+        driver.manage().window().maximize();
+    }
+
+    @Test
+    public void testSearchProduct() {
+        // Open the e-commerce application URL
+        driver.get("https://example.com");
+
+        // Search for a product
+        WebElement searchBox = driver.findElement(By.name("search"));
+        searchBox.sendKeys("Selenium WebDriver");
+        searchBox.sendKeys(Keys.ENTER);
+
+        // Verify the search results
+        WebElement searchResults = driver.findElement(By.className("product"));
+        Assert.assertTrue(searchResults.isDisplayed(), "Search results found");
+    }
+
+    @Test
+    public void testAddToCart() {
+        // Open the e-commerce application URL
+        driver.get("https://example.com");
+
+        // Click on a product
+        WebElement productLink = driver.findElement(By.linkText("Selenium WebDriver Book"));
+        productLink.click();
+
+        // Add the product to the cart
+        WebElement addToCartButton = driver.findElement(By.className("add-to-cart"));
+        addToCartButton.click();
+
+        // Verify the product is added to the cart
+        WebElement cartCount = driver.findElement(By.className("cart-count"));
+        Assert.assertEquals(cartCount.getText(), "1", "Product added to the cart");
+    }
+
+    @AfterClass
+    public void tearDown() {
+        // Close the browser window
+        driver.quit();
+    }
+}
